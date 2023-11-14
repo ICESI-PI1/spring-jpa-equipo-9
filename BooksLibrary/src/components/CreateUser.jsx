@@ -5,33 +5,29 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from '../config/axios';
 import DashboardPage from '../components/DashboardPage.jsx';
 
-function LoginPage() {
+function CreateUser() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-
-    const handleLogin = () => {
+    const handleCreateUser = () => {
         const userData = {
             username: username,
             password: password,
         };
 
+        const token = localStorage.getItem('token');
         axios
-            .post('/authenticate', userData)
+            .post('/users', userData,{
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
             .then((response) => {
 
                 if (response.status === 200) {
-                        toast.success('Inicio de sesión exitoso', {
+                        toast.success('Usuario creado exitosamente', {
                         position: 'top-right',
                         autoClose: 3000,
                     });
-                    const token = response.data.token;
-                    console.log('Token JWT recibido:', token);
-                    localStorage.setItem('token', token);
-                    ReactDOM.createRoot(document.getElementById('root')).render(
-                    <React.StrictMode>
-                        <DashboardPage/>
-                    </React.StrictMode>
-                    );
                 }
 
             })
@@ -67,7 +63,7 @@ function LoginPage() {
         <div>
 
             <div style={styles.container}>
-                <h1 style={styles.heading}>Authentication with JWT</h1>
+                <h1 style={styles.heading}>Create user</h1>
                 <form>
                     <div style={styles.formGroup}>
                         <label htmlFor="username" style={styles.label}>
@@ -93,8 +89,8 @@ function LoginPage() {
                             style={styles.input}
                         />
                     </div>
-                    <button type="button" onClick={handleLogin} style={styles.button}>
-                        Login
+                    <button type="button" onClick={handleCreateUser} style={styles.button}>
+                        Create
                     </button>
                 </form>
                 <ToastContainer/>
@@ -146,4 +142,4 @@ const styles = {
     },
 };
 
-export default LoginPage;
+export default CreateUser;
