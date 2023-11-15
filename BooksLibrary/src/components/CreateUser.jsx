@@ -4,15 +4,66 @@ import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from '../config/axios';
 import DashboardPage from '../components/DashboardPage.jsx';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import Dash from '../components/DashboardPage.jsx';
+import List from '../components/ShowUserList.jsx';
+import Delete from '../components/DeleteUser.jsx';
+import Update from '../components/UpdateUser.jsx';
 
 function CreateUser() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [value, setValue] = useState(0);
+
+    const handleChangee = (event, newValue) => {
+        setValue(newValue);
+    };
+
+    const handleDashboard = () => {
+        ReactDOM.createRoot(document.getElementById('root')).render(
+            <React.StrictMode>
+                <Dash/>
+            </React.StrictMode>
+        );
+    };
+
+    const handleShowList = () => {
+
+        ReactDOM.createRoot(document.getElementById('root')).render(
+            <React.StrictMode>
+                <List/>
+            </React.StrictMode>
+        );
+    };
+
+    const handleDelete = () => {
+
+        ReactDOM.createRoot(document.getElementById('root')).render(
+            <React.StrictMode>
+                <Delete/>
+            </React.StrictMode>
+        );
+    };
+
+    const handleUpdate = () => {
+
+        ReactDOM.createRoot(document.getElementById('root')).render(
+            <React.StrictMode>
+                <Update/>
+            </React.StrictMode>
+        );
+    };
+
     const handleCreateUser = () => {
-        const userData = {
-            username: username,
-            password: password,
-        };
+        if (!username.trim() || !password.trim()) {
+            toast.error('El nombre de usuario y la contraseña del usuario no pueden estar vacío', {
+                position: 'top-right',
+                autoClose: 3000,
+            });
+            return;
+        }
 
         const token = localStorage.getItem('token');
         axios
@@ -59,10 +110,30 @@ function CreateUser() {
             });
     };
 
-    return (
-        <div>
-
-            <div style={styles.container}>
+    return ( 
+        <div style={styles.container}>
+            <Box
+                sx={{
+                    maxWidth: {xs: 320, sm: 1000},
+                    bgcolor: 'background.paper',
+                    margin: '0 auto',
+                    padding: '20px',
+                }}
+            >
+                <Tabs
+                    value={value}
+                    onChange={handleChangee}
+                    variant="scrollable"
+                    scrollButtons="auto"
+                    aria-label="scrollable auto tabs example"
+                >
+                    <Tab label="Back to Dashboard" onClick={handleDashboard}/>
+                    <Tab label="Create User"/>
+                    <Tab label="Update User" onClick={handleUpdate}/>
+                    <Tab label="Delete User" onClick={handleDelete}/>
+                    <Tab label="Get User List" onClick={handleShowList} />
+                </Tabs>
+            </Box>
                 <h1 style={styles.heading}>Create user</h1>
                 <form>
                     <div style={styles.formGroup}>
@@ -94,19 +165,16 @@ function CreateUser() {
                     </button>
                 </form>
                 <ToastContainer/>
-            </div>
         </div>
     );
 }
 
 const styles = {
+
     container: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        margin: '0 auto',
     },
     heading: {
         backgroundColor: 'darkorange',
@@ -134,7 +202,7 @@ const styles = {
     },
     button: {
         backgroundColor: 'green',
-        color: '#fff',
+        color: '#000',
         border: 'none',
         borderRadius: '3px',
         padding: '10px 20px',
