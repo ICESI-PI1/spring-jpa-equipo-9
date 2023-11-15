@@ -15,6 +15,13 @@ public class Book {
     @JoinColumn(name = "author_id")
     private Author author;
 
+    public Book(String theGreatGatsby, String s) {
+    }
+
+    public Book() {
+    }
+
+
     // Getter and Setter
 
     public Long getId() {
