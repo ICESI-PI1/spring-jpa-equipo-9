@@ -51,20 +51,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		// We don't need CSRF for this example
 		httpSecurity.csrf().disable()
-				// Permitir todas las solicitudes OPTIONS
-				.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-				// Resto de las reglas de autorización
+				.authorizeRequests()
+				.antMatchers("/h2-console/**").permitAll()  // Permitir acceso a la consola de H2
+				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				.antMatchers("/authenticate").permitAll()
 				.anyRequest().authenticated()
 				.and()
-				// Resto de la configuración
 				.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
 				.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-		// Add a filter to validate the tokens with every request
+		// Permitir la carga de marcos en la consola de H2
+		httpSecurity.headers().frameOptions().disable();
+
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 

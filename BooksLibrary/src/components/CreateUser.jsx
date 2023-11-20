@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import {toast, ToastContainer} from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from '../config/axios';
 import DashboardPage from '../components/DashboardPage.jsx';
@@ -13,9 +13,13 @@ import Delete from '../components/DeleteUser.jsx';
 import Update from '../components/UpdateUser.jsx';
 
 function CreateUser() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
     const [value, setValue] = useState(0);
+
+    // Utiliza un solo estado para todos los datos del usuario
+    const [userData, setUserData] = useState({
+        username: '',
+        password: '',
+    });
 
     const handleChangee = (event, newValue) => {
         setValue(newValue);
@@ -24,41 +28,38 @@ function CreateUser() {
     const handleDashboard = () => {
         ReactDOM.createRoot(document.getElementById('root')).render(
             <React.StrictMode>
-                <Dash/>
+                <Dash />
             </React.StrictMode>
         );
     };
 
     const handleShowList = () => {
-
         ReactDOM.createRoot(document.getElementById('root')).render(
             <React.StrictMode>
-                <List/>
+                <List />
             </React.StrictMode>
         );
     };
 
     const handleDelete = () => {
-
         ReactDOM.createRoot(document.getElementById('root')).render(
             <React.StrictMode>
-                <Delete/>
+                <Delete />
             </React.StrictMode>
         );
     };
 
     const handleUpdate = () => {
-
         ReactDOM.createRoot(document.getElementById('root')).render(
             <React.StrictMode>
-                <Update/>
+                <Update />
             </React.StrictMode>
         );
     };
 
     const handleCreateUser = () => {
-        if (!username.trim() || !password.trim()) {
-            toast.error('El nombre de usuario y la contraseña del usuario no pueden estar vacío', {
+        if (!userData.username.trim() || !userData.password.trim()) {
+            toast.error('El nombre de usuario y la contraseña del usuario no pueden estar vacíos', {
                 position: 'top-right',
                 autoClose: 3000,
             });
@@ -67,20 +68,18 @@ function CreateUser() {
 
         const token = localStorage.getItem('token');
         axios
-            .post('/users', userData,{
+            .post('/users', userData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             })
             .then((response) => {
-
-                if (response.status === 200) {
-                        toast.success('Usuario creado exitosamente', {
+                if (response.status === 201) {
+                    toast.success('Usuario creado exitosamente', {
                         position: 'top-right',
                         autoClose: 3000,
                     });
                 }
-
             })
             .catch((error) => {
                 console.error('Error de autenticación:', error);
@@ -91,18 +90,18 @@ function CreateUser() {
                             autoClose: 3000,
                         });
                     } else if (error.response.status === 500) {
-                        toast.error('Error interno del servidor. Por favor, intente de nuevo más tarde.', {
+                        toast.error('Error interno del servidor. Por favor, inténtelo de nuevo más tarde.', {
                             position: 'top-right',
                             autoClose: 3000,
                         });
                     } else {
-                        toast.error('Error. Por favor, intente de nuevo más tarde.', {
+                        toast.error('Error. Por favor, inténtelo de nuevo más tarde.', {
                             position: 'top-right',
                             autoClose: 3000,
-                        })
+                        });
                     }
                 } else {
-                    toast.error('Error de red. Por favor, intente de nuevo más tarde.', {
+                    toast.error('Error de red. Por favor, inténtelo de nuevo más tarde.', {
                         position: 'top-right',
                         autoClose: 3000,
                     });
@@ -110,11 +109,11 @@ function CreateUser() {
             });
     };
 
-    return ( 
+    return (
         <div style={styles.container}>
             <Box
                 sx={{
-                    maxWidth: {xs: 320, sm: 1000},
+                    maxWidth: { xs: 320, sm: 1000 },
                     bgcolor: 'background.paper',
                     margin: '0 auto',
                     padding: '20px',
@@ -127,50 +126,51 @@ function CreateUser() {
                     scrollButtons="auto"
                     aria-label="scrollable auto tabs example"
                 >
-                    <Tab label="Back to Dashboard" onClick={handleDashboard}/>
-                    <Tab label="Create User"/>
-                    <Tab label="Update User" onClick={handleUpdate}/>
-                    <Tab label="Delete User" onClick={handleDelete}/>
+                    <Tab label="Back to Dashboard" onClick={handleDashboard} />
+                    <Tab label="Create User" />
+                    <Tab label="Update User" onClick={handleUpdate} />
+                    <Tab label="Delete User" onClick={handleDelete} />
                     <Tab label="Get User List" onClick={handleShowList} />
                 </Tabs>
             </Box>
-                <h1 style={styles.heading}>Create user</h1>
-                <form>
-                    <div style={styles.formGroup}>
-                        <label htmlFor="username" style={styles.label}>
-                            Username
-                        </label>
-                        <input
-                            type="text"
-                            id="username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            style={styles.input}
-                        />
-                    </div>
-                    <div style={styles.formGroup}>
-                        <label htmlFor="password" style={styles.label}>
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            style={styles.input}
-                        />
-                    </div>
-                    <button type="button" onClick={handleCreateUser} style={styles.button}>
-                        Create
-                    </button>
-                </form>
-                <ToastContainer/>
+            <h1 style={styles.heading}>Create user</h1>
+            <form>
+                <div style={styles.formGroup}>
+                    <label htmlFor="username" style={styles.label}>
+                        Username
+                    </label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        value={userData.username}
+                        onChange={(e) => setUserData({ ...userData, username: e.target.value })}
+                        style={styles.input}
+                    />
+                </div>
+                <div style={styles.formGroup}>
+                    <label htmlFor="password" style={styles.label}>
+                        Password
+                    </label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        value={userData.password}
+                        onChange={(e) => setUserData({ ...userData, password: e.target.value })}
+                        style={styles.input}
+                    />
+                </div>
+                <button type="button" onClick={handleCreateUser} style={styles.button}>
+                    Create
+                </button>
+            </form>
+            <ToastContainer />
         </div>
     );
 }
 
 const styles = {
-
     container: {
         display: 'flex',
         flexDirection: 'column',
