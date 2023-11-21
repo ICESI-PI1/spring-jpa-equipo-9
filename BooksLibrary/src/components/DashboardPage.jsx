@@ -3,9 +3,16 @@ import ReactDOM from 'react-dom/client';
 import Book from './CreateBook.jsx'
 import Login from '../components/LoginPage.jsx'
 import AuthorCreation from '../components/AuthorCreation.jsx';
-
+import User from '../components/CreateUser.jsx'
 
 class MyComponent extends Component {
+    handleSingIn = () => {
+        ReactDOM.createRoot(document.getElementById('root')).render(
+            <React.StrictMode>
+                <User/>
+            </React.StrictMode>
+            );
+    }
 
     handleShowBook = () => {
         ReactDOM.createRoot(document.getElementById('root')).render(
@@ -120,8 +127,11 @@ class MyComponent extends Component {
                             <li data-xcoord="320px" onClick={() => this.handleShowAuthor()}>
                                 Authors
                             </li>
+                            <li data-xcoord="480px" onClick={() => this.handleSingIn()}>
+                                Users  
+                            </li>
                             <li data-xcoord="480px" onClick={() => this.handleShowLogin()}>
-                                End Sesion
+                                End Sesion 
                             </li>
                         </ul>
                     </nav>

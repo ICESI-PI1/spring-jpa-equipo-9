@@ -2,18 +2,21 @@ package com.javainuse.dto;
 
 import java.io.Serializable;
 
-public class UserDTO implements Serializable {
-
-    private Long id;
+public class UserDTO {
     private String username;
+    private String password;
 
-    public Long getId() {
-        return id;
+    // constructores, getters y setters
+
+    public UserDTO() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public UserDTO(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
+
+    // otros métodos si es necesario
 
     public String getUsername() {
         return username;
@@ -22,4 +25,13 @@ public class UserDTO implements Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
+

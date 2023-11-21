@@ -36,16 +36,22 @@ public class JwtAuthenticationController {
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest)
 			throws Exception {
+		try {
+			authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
-		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+			final UserDetails userDetails = jwtInMemoryUserDetailsService
+					.loadUserByUsername(authenticationRequest.getUsername());
 
-		final UserDetails userDetails = jwtInMemoryUserDetailsService
-				.loadUserByUsername(authenticationRequest.getUsername());
+			final String token = jwtTokenUtil.generateToken(userDetails);
 
-		final String token = jwtTokenUtil.generateToken(userDetails);
-
-		return ResponseEntity.ok(new JwtResponse(token));
+			return ResponseEntity.ok(new JwtResponse(token));
+		} catch (Exception e) {
+			// Agregar logs de depuración
+			System.out.println("Error during authentication: " + e.getMessage());
+			throw e;
+		}
 	}
+
 
 	private void authenticate(String username, String password) throws Exception {
 		Objects.requireNonNull(username);
@@ -53,10 +59,15 @@ public class JwtAuthenticationController {
 
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+			// Agregar logs de depuración
+			System.out.println("Authentication successful for user: " + username);
 		} catch (DisabledException e) {
 			throw new Exception("USER_DISABLED", e);
 		} catch (BadCredentialsException e) {
+			// Agregar logs de depuración
+			System.out.println("Authentication failed for user: " + username);
 			throw new Exception("INVALID_CREDENTIALS", e);
 		}
 	}
+
 }

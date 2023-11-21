@@ -8,6 +8,7 @@ import DashboardPage from '../components/DashboardPage.jsx';
 function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
     const handleLogin = () => {
         const userData = {
             username: username,
