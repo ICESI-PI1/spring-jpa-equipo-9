@@ -4,7 +4,10 @@
 
 ## Descripción del Proyecto
 
-Este proyecto, "Taller 4 React", es una aplicación que utiliza Spring Boot en el backend junto con JSON Web Tokens (JWT) para la autenticación y autorización de usuarios. En esta versión, hemos incorporado React en la interfaz de usuario para proporcionar funcionalidades y componentes de usuario interactivos. Estamos utilizando este proyecto para desarrollar una aplicación en ReactJS que consume la API REST, desarrollada en el taller anterior, para gestionar libros y autores. Además, se ha implementado un sistema de autenticación utilizando JWT.
+El taller React Task "Assignation 5" es una continuación del taller realizado la última vez en el curso, que se llama "Assignation 4". El problema es el mismo con las diferencias sutiles, ya que pide desarrollar una aplicación que utiliza la biblioteca BooksLibrary que desarrollamos en React y que consume Spring
+API REST de arranque desarrollada en el taller anterior. Para gestionar libros y autores. Además,
+debes implementar un
+Sistema de autenticación mediante JWT (JSON Web Tokens)
 
 ## Funcionalidades
 
@@ -34,6 +37,8 @@ Siga estos pasos para utilizar y ejecutar el proyecto en su entorno local:
 - SpringBoot 2.1.1
 - React jsx
 - JWT
+- H2 
+- Jacoco
 
 ## Contribuciones
 
@@ -47,4 +52,4 @@ Siga estos pasos para utilizar y ejecutar el proyecto en su entorno local:
 
 ---
 
-¡Gracias por visitar nuestro proyecto "Taller 4 React"! Si tienes alguna pregunta o sugerencia, no dudes en ponerte en contacto con nosotros, mas detalles en el informe suministrado.
+¡Gracias por visitar nuestro proyecto "Taller 5 SpringJpa"! Si tienes alguna pregunta o sugerencia, no dudes en ponerte en contacto con nosotros, mas detalles en el informe suministrado.
