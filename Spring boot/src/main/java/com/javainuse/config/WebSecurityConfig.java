@@ -51,21 +51,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.csrf().disable()
+		httpSecurity
+				.csrf().disable()
+				.cors().and() // Agrega esta línea para configurar CORS
 				.authorizeRequests()
-				.antMatchers("/h2-console/**").permitAll()  // Permitir acceso a la consola de H2
-				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-				.antMatchers("/authenticate").permitAll()
+				.antMatchers("/h2-console/**", "/authenticate").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
 				.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-		// Permitir la carga de marcos en la consola de H2
+		// Deshabilita la protección CSRF para la consola H2
 		httpSecurity.headers().frameOptions().disable();
 
+		// Resto de la configuración
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}
+
+
 
 }
